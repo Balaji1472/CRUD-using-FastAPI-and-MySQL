@@ -1,12 +1,11 @@
 import streamlit as st
 import requests
 import pandas as pd
-#from models import Product as PydanticProduct # Import Pydantic model for type hinting
 
-# --- API Configuration ---
+# API Configuration 
 API_URL = "http://127.0.0.1:8000"
 
-# --- Helper Functions to Talk to the API ---
+#functions to talk to the API ---
 
 def get_all_products():
     """Fetches all products from the backend."""
@@ -58,16 +57,15 @@ def delete_product(product_id: int):
         st.error(f"Error deleting product: {e}")
         return None
 
-# --- Streamlit User Interface ---
+#Streamlit UI
 
 st.set_page_config(page_title="Product Dashboard", layout="wide")
-st.title("📦 Product Management Dashboard")
+st.title("Product Management Dashboard")
 
 # --- Section 1: Display All Products ---
 st.header("All Products")
 products_data = get_all_products()
 if products_data:
-    #st.write(products_data)
     df = pd.DataFrame(products_data)
     st.dataframe(df, width='stretch')
 else:
@@ -110,7 +108,7 @@ with col1:
             }
             result = add_product(product_payload)
             if result:
-                st.toast("✅ Product added successfully!", icon="🎉")
+                st.toast("Product added successfully!", icon="🎉")
                 st.rerun()
 
 # --- Update/Delete Product Form (in column 2) ---
@@ -138,13 +136,13 @@ with col2:
                     }
                     result = update_product(selected_product['id'], product_update_payload)
                     if result:
-                        st.toast("✅ Product updated successfully!", icon="🔄")
+                        st.toast("Product updated successfully!")
                         st.rerun()
 
             if st.button("Delete Selected Product", key=f"delete_{selected_product['id']}", type="primary"):
                 result = delete_product(selected_product['id'])
                 if result:
-                    st.toast("✅ Product deleted successfully!", icon="🗑️")
+                    st.toast("Product deleted successfully!")
                     st.rerun()
     else:
         st.warning("No products available to manage.")
